@@ -1,4 +1,7 @@
 <?php
+if (!isset($_GET['id'])) {
+	header('Location: index.php');
+}
 session_start();
 require_once "db.php";
 if(isset($_GET['id']) && !empty($_GET['id'])){
@@ -9,7 +12,7 @@ if(isset($_GET['id']) && !empty($_GET['id'])){
         $data = mysqli_fetch_assoc($data);   
     }
 }
-if(isset($_POST['Update'])){
+if(isset($_POST['update'])){
     $id = $_GET['id'];
 	$image = $_FILES['image'];
     $firstname = $_POST['firstname'];
@@ -30,18 +33,33 @@ if(isset($_POST['Update'])){
             header("Location:../index.php");
         }
         $uniq= $ext[0].'_'. rand(1,15). '.'.end($ext);
-        $up= move_uploaded_file($image['tmp_name'],'../upload/'.$uniq);
+        $up= move_uploaded_file($image['tmp_name'],'upload/'.$uniq);
+
+	if ($up) {
+		$update = "UPDATE form_info SET photo= '$uniq', firstname = '$firstname', lastname = '$lastname', email = '$email' WHERE id = '$id'";
+
+		if(mysqli_query($conn,$update)){
+			echo 'Successfully Update with Image';
+			header("Location: edit.php?id=$id");
+		}
+	}
 
 	}
 
-    $update = "UPDATE form_info SET photo= '$uniq' firstname = '$firstname', lastname = '$laststname', email = '$email' WHERE id = '$id'";
+	else {
 
-    if(mysqli_query($conn,$update)){
-        echo 'Successfully Update';
-        header("Location: edit.php");
-    }
-}
-?>
+	$update = "UPDATE form_info SET firstname = '$firstname', lastname = '$lastname', email = '$email' WHERE id = '$id'";
+
+		if(mysqli_query($conn,$update)){
+			echo 'Successfully Update';
+			header("Location: edit.php?id=$id");
+		}
+	}
+
+	}
+
+	?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -76,7 +94,7 @@ if(isset($_POST['Update'])){
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-sm-6">
-				<form action="inc/registration.php" method="POST" enctype="multipart/form-data">
+				<form method="POST" enctype="multipart/form-data">
 					<h1>Sign Up</h1>
 					<p>Please fill the form with correct values.</p>
 					<hr>
@@ -103,7 +121,7 @@ if(isset($_POST['Update'])){
 						<img src="upload/<?php echo $data['photo'];?>">
 					</div>
 
-					<input class="btn btn-primary" type="submit" name="create" value="Update">
+					<input class="btn btn-primary" type="submit" name="update" value="Update">
 				
 				</form>
 				</div>

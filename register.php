@@ -64,9 +64,9 @@ session_start();
 				</form>
 				<?php
 	                 session_destroy();
-	                 session_unset();
+	                session_unset();
 
-?>
+                ?>
 				</div>
 		</div>
 		

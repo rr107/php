@@ -8,6 +8,24 @@
     <title>PHP || FORM</title>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    
+    <i class="glyphicon glyphicon-cloud" style="font-size:60px;color:lightblue;text-shadow:2px 2px 4px #000000;"></i>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav float-right">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+        </li>
+       
+        <li class="nav-item">
+          <a class="nav-link active" href="register.php">Register</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>  
+
 <?php 
             require_once "db.php";
             $sql = "SELECT * FROM form_info";
